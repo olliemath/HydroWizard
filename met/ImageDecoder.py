@@ -50,11 +50,14 @@ def main():
     rainarrays = os.listdir(rainarray_dir)
     new_files = [filename for filename in images if filename not in rainarrays]
 
+    count = 0.0
+    total = len(new_files)
     for image in new_files:
         rain_map = MapMaker(image)
         with open(osp.join(rainarray_dir, image), "w") as f:
             json.dump(rain_map, f)
-
+        count += 1
+        print int(100 * count / total), "% done"
 
 if __name__ == "__main__":
     main()

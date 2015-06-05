@@ -1,0 +1,14 @@
+We will use a HDF5 storage method, which is implemented in C but will work
+well with any of H5Py, PyTables, Matlab, or R for data analysis.
+
+The storage will be as one extremely large ndarray - in this case, if we
+have N time/data points, we have an N x 500 x 500 array A of 8-bit int values
+(in truth we only need 4 bits per value and many are the same: possibly
+experiment with some compression).
+
+Along with this raw ndarray we require:
+1. a list of unix times (so unix_time[k] corresponds to A[x=k])
+2. a 500x500 array relating each entry to a lat/lon
+Note: 2 can be replaced by a function un-doing the mercator projection,
+but the projection is such that we cannot make do with two lists of
+length 500.

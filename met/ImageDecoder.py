@@ -11,9 +11,6 @@ import json
 home = osp.expanduser("~")
 image_dir = osp.join(home, "WetWizard", "data", "images")
 rainarray_dir = osp.join(home, "WetWizard", "data", "rainarrays")
-# Create the directory for the 500x500 arrays if it doesn't exist
-if not osp.exists(rainarray_dir):
-    os.makedirs(rainarray_dir)
 
 
 """ Now we work on conversion """
@@ -46,8 +43,10 @@ def MapMaker(image):
 
 
 def main():
-    images = os.listdir(image_dir)
+    if not osp.exists(rainarray_dir):
+        os.makedirs(rainarray_dir)
     rainarrays = os.listdir(rainarray_dir)
+    images = os.listdir(image_dir)
     new_files = [filename for filename in images if filename not in rainarrays]
 
     count = 0.0

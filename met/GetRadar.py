@@ -45,8 +45,12 @@ new_times = [met_time for met_time in times if met_time.ut not in os.listdir(osp
 def RainUrl(met_time):
     return obs_layer + "RADAR_UK_Composite_Highres/png?TIME=" + met_time + "Z&key=" + api_key
 
-for met_time in new_times:
-    image = urllib.urlopen(RainUrl(met_time.met_time))
-    image_name = str(met_time.ut)
+for new_time in new_times:
+    image = urllib.urlopen(RainUrl(new_time.met_time))
+    image_data = image.read()
+    # Sometimes the met office has only sent us annoying spam:
+    if image_data == "Invalid timestep":
+        continue
+    image_name = str(new_time.ut)
     with open(osp.join(data_dir, "images", image_name), "w") as f:
         f.write(image.read())

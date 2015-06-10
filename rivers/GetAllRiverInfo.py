@@ -47,8 +47,8 @@ while True:
         next_river = chunk['meta']['link']['resume']
         break
 
-with open(osp.join(data_dir, "ResumeLink.txt"), "w") as output:
-    output.write(next_river)
+# with open(osp.join(data_dir, "ResumeLink.txt"), "w") as output:
+#     output.write(next_river)
 
 with open(osp.join(data_dir, "CurrentRiverData.txt"), "w") as output:
     json.dump(rivers, output)

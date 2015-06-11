@@ -133,7 +133,7 @@ def GetRainFcs():
         image = urllib.urlopen(FcsUrl("Precipitation_Rate", issued_at.met_time, str(step)))
         image_data = image.read()
         if image_data == "Invalid timestep":
-            return
+            continue
         # The "step" is number of hours ahead: we convert this to unix timestamp
         image_name = str(issued_at.ut + step * 3600)
         with open(osp.join(image_dir, "forecasts", "rain", image_name), "w") as f:
@@ -150,7 +150,7 @@ def GetTempFcs():
         image = urllib.urlopen(FcsUrl("Temperature", issued_at.met_time, str(step)))
         image_data = image.read()
         if image_data == "Invalid timestep":
-            return
+            continue
         image_name = str(issued_at.ut + step * 3600)
         with open(osp.join(image_dir, "forecasts", "temp", image_name), "w") as f:
             f.write(image_data)

@@ -1,3 +1,4 @@
+#!/usr/bin/env python2.7
 # This requires pypng to decode the image from colors to rain
 # If you have pip then "pip install pypng" (need sudo if not in a virtualenv)
 
@@ -22,7 +23,7 @@ color_dict = {(199, 191, 193, 128): 0, (0, 0, 254, 255): 1, (50, 101, 254, 255):
 
 
 def MapMaker(image):
-    FILE = osp.join(image_dir, image)
+    FILE = osp.join(image_dir, "rain", image)
 
     # Get a list of RGBA-values giving the photo
     data = png.Reader(filename=FILE).read_flat()
@@ -46,7 +47,7 @@ def main():
     if not osp.exists(rainarray_dir):
         os.makedirs(rainarray_dir)
     rainarrays = os.listdir(rainarray_dir)
-    images = os.listdir(image_dir)
+    images = os.listdir(osp.join(image_dir, "rain"))
     new_files = [filename for filename in images if filename not in rainarrays]
 
     count = 0.0

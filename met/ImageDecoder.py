@@ -1,21 +1,18 @@
 #!/usr/bin/env python2.7
-# This requires pypng to decode the image from colors to rain
-# If you have pip then "pip install pypng" (need sudo if not in a virtualenv)
+""" A small module to to decode the image from colors to rain. Requires PyPNG. """
 
-""" Set up local env """
-
+# Set up local env
 import png
 import os.path as osp
 import os
 import json
 
 home = osp.expanduser("~")
-image_dir = osp.join(home, "WetWizard", "data", "images")
-rainarray_dir = osp.join(home, "WetWizard", "data", "rainarrays")
+image_dir = osp.join(home, "HydroWizard", "data", "images")
+rainarray_dir = osp.join(home, "HydroWizard", "data", "rainarrays")
 
 
-""" Now we work on conversion """
-
+# Now we work on conversion
 # Met office denotes rainy-ness by RGBA: we convert to a numerical system
 color_dict = {(199, 191, 193, 128): 0, (0, 0, 254, 255): 1, (50, 101, 254, 255): 2, (127, 127, 0, 255): 3,
               (254, 203, 0, 255): 4, (254, 152, 0, 255): 5, (254, 0, 0, 255): 6, (254, 0, 254, 255): 7,
@@ -40,9 +37,7 @@ def MapMaker(image):
     return [rain_list[i:i+500] for i in range(0, len(rain_list), 500)]
 
 
-""" If run as main script we convert all new files """
-
-
+# If run as main script we convert all new files
 def main():
     if not osp.exists(rainarray_dir):
         os.makedirs(rainarray_dir)

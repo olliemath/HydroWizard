@@ -12,7 +12,7 @@ import os.path as osp
 from optparse import OptionParser
 
 home = osp.expanduser("~")
-data_dir = osp.join(home, "HydroWizard", "data")
+data_dir = osp.join(home, "WetWizard", "data")
 image_dir = osp.join(data_dir, "images")
 
 # We make all our data directories
@@ -21,7 +21,7 @@ try:
     with open(osp.join(data_dir, "API_Auth")) as f:
         api_key = f.read().rstrip()
 except IOError:
-    err_str = "Please make a file 'API_Auth' in ~/HydroWizard/data containing your met office datapoint key. " \
+    err_str = "Please make a file 'API_Auth' in ~/WetWizard/data containing your met office datapoint key. " \
               "See metoffice.gov.uk/datapoint for details."
     print err_str
     exit(1)
@@ -168,16 +168,16 @@ parser = OptionParser()
 # Now add a set of booleans to work out what to do
 parser.add_option("--rainobs", action="store_true", dest="rainobs", default=False,
                   help="Gets all available Rain Radar observations. These will be stored "
-                  "at ~/HydroWizard/data/images/rain.")
+                  "at ~/WetWizard/data/images/rain.")
 parser.add_option("--tempobs", action="store_true", dest="tempobs", default=False,
                   help="Gets temperatrue observation from most recent of 0900, 1500, 2100, or 0300. "
-                  "These will be stored at ~/HydroWizard/data/images/temp.")
+                  "These will be stored at ~/WetWizard/data/images/temp.")
 parser.add_option("--rainfcs", action="store_true", dest="rainfcs", default=False,
                   help="Gets last issued set of precipitation forecast maps for 0-36 hours into the future. "
-                  "These will be stored at ~/HydroWizard/data/images/forecasts/rain.")
+                  "These will be stored at ~/WetWizard/data/images/forecasts/rain.")
 parser.add_option("--tempfcs", action="store_true", dest="tempfcs", default=False,
                   help="Gets last issued set of temperature forecast maps for 0-36 hours into the future. "
-                  "These will be stored at ~/HydroWizard/data/images/forecasts/temp.")
+                  "These will be stored at ~/WetWizard/data/images/forecasts/temp.")
 # Get the user's options
 options, args = parser.parse_args()
 

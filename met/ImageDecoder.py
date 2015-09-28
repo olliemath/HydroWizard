@@ -8,8 +8,8 @@ import os
 import json
 
 home = osp.expanduser("~")
-image_dir = osp.join(home, "HydroWizard", "data", "images")
-rainarray_dir = osp.join(home, "HydroWizard", "data", "rainarrays")
+image_dir = osp.join(home, "WetWizard", "data", "images")
+rainarray_dir = osp.join(home, "WetWizard", "data", "rainarrays")
 
 
 # Now we work on conversion

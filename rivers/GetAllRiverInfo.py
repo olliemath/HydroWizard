@@ -9,7 +9,7 @@ from os import path
 import time
 
 home = path.expanduser("~")
-data_dir = path.join(home, "HydroWizard", "data")
+data_dir = path.join(home, "WetWizard", "data")
 
 
 def GetNewRivers(update_link):

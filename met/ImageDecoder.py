@@ -19,7 +19,7 @@ color_dict = {(199, 191, 193, 128): 0, (0, 0, 254, 255): 1, (50, 101, 254, 255):
               (229, 254, 254, 255): 8, (0, 0, 0, 0): 0}
 
 
-def MapMaker(image):
+def map_maker(image):
     FILE = osp.join(image_dir, "rain", image)
 
     # Get a list of RGBA-values giving the photo
@@ -48,7 +48,7 @@ def main():
     count = 0.0
     total = len(new_files)
     for image in new_files:
-        rain_map = MapMaker(image)
+        rain_map = map_maker(image)
         with open(osp.join(rainarray_dir, image), "w") as f:
             json.dump(rain_map, f)
         count += 1

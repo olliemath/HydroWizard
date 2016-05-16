@@ -12,7 +12,7 @@ home = path.expanduser("~")
 data_dir = path.join(home, "WetWizard", "data")
 
 
-def GetNewRivers(update_link):
+def get_new_rivers(update_link):
     new_rivers = []
     # While there are new readings to download, go get them.
     while True:
@@ -43,7 +43,7 @@ def GetNewRivers(update_link):
     return new_rivers
 
 
-def UpdateDictionary(old_rivers, new_rivers, levels_dict):
+def update_dictionary(old_rivers, new_rivers, levels_dict):
     for entry in new_rivers:
         try:
             river = entry['river']
@@ -83,8 +83,8 @@ def main():
         update_link = 'http://api.rainchasers.com/v1/river'
 
     # Get / process new information
-    new_rivers = GetNewRivers(update_link)
-    UpdateDictionary(rivers, new_rivers, levels_dict)
+    new_rivers = get_new_rivers(update_link)
+    update_dictionary(rivers, new_rivers, levels_dict)
 
     # Dump to files
     with open(path.join(data_dir, "RiverMetaData.json"), "w") as output:

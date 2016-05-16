@@ -72,7 +72,7 @@ class MetData:
 
 # This function will ask the met what observations/forecasts are available and
 # return a MetData class
-def GetCapabilities(layer_name):
+def get_capabilities(layer_name):
     page = urllib.urlopen(layer_name + request_string + api_key)
     return MetData(json.loads(page.read()))
 
@@ -82,17 +82,17 @@ def GetCapabilities(layer_name):
 
 # These helper functions take details of the layer we're trying to access and
 # return an appropriate url.
-def ObsUrl(layer_name, met_time):
+def obs_url(layer_name, met_time):
     return obs_layer + layer_name + "/png?TIME=" + met_time + "Z&key=" + api_key
 
 
-def FcsUrl(layer_name, met_time, step):
+def fcs_url(layer_name, met_time, step):
     return fcs_layer + layer_name + "/png?RUN=" + met_time + "Z&FORECAST=" + step + "&key=" + api_key
 
 
-def GetRainObs():
+def get_rain_obs():
     # Get avaiability from Met Office
-    available_data = GetCapabilities(obs_layer)
+    available_data = get_capabilities(obs_layer)
     # Untangle
     times = available_data.get_times("RADAR_UK_Composite_Highres")
     if not osp.exists(osp.join(image_dir, "rain")):
@@ -100,7 +100,7 @@ def GetRainObs():
     new_times = [t for t in times if str(t.ut) not in os.listdir(osp.join(image_dir, "rain"))]
     # Now download all the new images
     for t in new_times:
-        image = urllib.urlopen(ObsUrl("RADAR_UK_Composite_Highres", t.met_time))
+        image = urllib.urlopen(obs_url("RADAR_UK_Composite_Highres", t.met_time))
         image_data = image.read()
         # Sometimes the met office has only sent us annoying spam:
         if image_data == "Invalid timestep":
@@ -110,15 +110,15 @@ def GetRainObs():
             f.write(image_data)
 
 
-def GetTempObs():
+def get_temp_obs():
     # This is actually the "0 hours ahead" time step in the forecast layer
-    available_data = GetCapabilities(fcs_layer)
+    available_data = get_capabilities(fcs_layer)
     # Untangle
     issued_at = available_data.get_times("Temperature")
     if not osp.exists(osp.join(image_dir, "temp")):
         os.makedirs(osp.join(image_dir, "temp"))
     if str(issued_at.ut) not in os.listdir(osp.join(image_dir, "temp")):
-        image = urllib.urlopen(FcsUrl("Temperature", issued_at.met_time, "0"))
+        image = urllib.urlopen(fcs_url("Temperature", issued_at.met_time, "0"))
         image_data = image.read()
         # Get rid of spam
         if image_data == "Invalid timestep":
@@ -128,15 +128,15 @@ def GetTempObs():
             f.write(image_data)
 
 
-def GetRainFcs():
-    available_data = GetCapabilities(fcs_layer)
+def get_rain_fcs():
+    available_data = get_capabilities(fcs_layer)
     issued_at = available_data.get_times("Precipitation_Rate")
     steps = available_data.get_steps("Precipitation_Rate")
     # Make a new forecasts directory if it doesn't exist
     if not osp.exists(osp.join(image_dir, "forecasts", "rain")):
         os.makedirs(osp.join(image_dir, "forecasts", "rain"))
     for step in steps:
-        image = urllib.urlopen(FcsUrl("Precipitation_Rate", issued_at.met_time, str(step)))
+        image = urllib.urlopen(fcs_url("Precipitation_Rate", issued_at.met_time, str(step)))
         image_data = image.read()
         if image_data == "Invalid timestep":
             continue
@@ -146,14 +146,14 @@ def GetRainFcs():
             f.write(image_data)
 
 
-def GetTempFcs():
-    available_data = GetCapabilities(fcs_layer)
+def get_temp_fcs():
+    available_data = get_capabilities(fcs_layer)
     issued_at = available_data.get_times("Temperature")
     steps = available_data.get_steps("Temperature")
     if not osp.exists(osp.join(image_dir, "forecasts", "temp")):
         os.makedirs(osp.join(image_dir, "forecasts", "temp"))
     for step in steps:
-        image = urllib.urlopen(FcsUrl("Temperature", issued_at.met_time, str(step)))
+        image = urllib.urlopen(fcs_url("Temperature", issued_at.met_time, str(step)))
         image_data = image.read()
         if image_data == "Invalid timestep":
             continue
@@ -187,10 +187,10 @@ if not (options.rainobs or options.tempobs or options.rainfcs or options.tempfcs
     print "Are you sure you don't want any weather data? Use --help to see available options."
 
 if options.rainobs:
-    GetRainObs()
+    get_rain_obs()
 if options.rainfcs:
-    GetRainFcs()
+    get_rain_fcs()
 if options.tempobs:
-    GetTempObs()
+    get_temp_obs()
 if options.tempfcs:
-    GetTempFcs()
+    get_temp_fcs()
